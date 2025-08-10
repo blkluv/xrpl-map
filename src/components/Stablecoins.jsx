@@ -119,7 +119,6 @@ const Stablecoins = ({ stablecoinData, isLoading }) => {
           
           {coins.map((coin, i) => {
             const x = (coin.amount / maxAmount) * 260 + 10;
-            const growthRate = getGrowthTrend(coin.amount);
             const utilization = 60 + (Math.random() * 30); // 60-90% utilization
             const y = 90 - (utilization / 100) * 80;
             const size = Math.max(5, Math.min(12, Math.log10(coin.amount) - 2));
@@ -162,7 +161,7 @@ const Stablecoins = ({ stablecoinData, isLoading }) => {
   };
 
   return (
-  <aside className="endpoints">
+    <aside className="endpoints">
       <h1 className="title">Stablecoins</h1>
       
       <div className="tab-container">
@@ -185,53 +184,53 @@ const Stablecoins = ({ stablecoinData, isLoading }) => {
           {activeTab === 'coins' && (
             <div className="coins-view">
               {stablecoinData.map(region => {
-        const regionTotal = region.coins.reduce((total, coin) => total + coin.amount, 0);
-        return (
-          <div className="section" key={region.region}>
-            <h2 
-              className="section-header" 
-              onClick={() => toggleRegion(region.region)}
-            >
-              <span className={`collapse-icon ${collapsedRegions[region.region] ? 'collapsed' : ''}`}>
-                ▼
-              </span>
-              <div className="region-info">
-                <span className="region-name">{region.region}</span>
-                <span className="region-total">${(regionTotal / 1000000).toFixed(1)}M</span>
-              </div>
-            </h2>
-          {!collapsedRegions[region.region] && region.coins.map(coin => (
-            <div className="asset" key={coin.name}>
-              <p className="asset-name">{coin.name}</p>
-              <p className="asset-city">{coin.city}</p>
-              <a 
-                href={getExplorerLink(coin.issuer)} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="asset-issuer"
-              >
-                <span className="flag-emoji">
-                  {coin.city === 'New York' && '🇺🇸'}
-                  {coin.city === 'São Paulo' && '🇧🇷'}
-                  {coin.city === 'Paris' && '🇫🇷'}
-                </span>
-                {truncateAddress(coin.issuer)}
-              </a>
-              <div className="asset-stats">
-                <div className="asset-stat-item">
-                  <span className="stat-label">MC</span>
-                  <span>${coin.amount.toLocaleString()}</span>
-                </div>
-                <div className="asset-stat-item">
-                  <span className="stat-label">24H VOL {coin.volume24h && coin.volume24h > 0 ? '🟢' : '⚪'}</span>
-                  <span>${(coin.volume24h || (coin.amount * 0.05)).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
-                </div>
-              </div>
-            </div>
-                ))}
-              </div>
-            );
-          })}
+                const regionTotal = region.coins.reduce((total, coin) => total + coin.amount, 0);
+                return (
+                  <div className="section" key={region.region}>
+                    <h2 
+                      className="section-header" 
+                      onClick={() => toggleRegion(region.region)}
+                    >
+                      <span className={`collapse-icon ${collapsedRegions[region.region] ? 'collapsed' : ''}`}>
+                        ▼
+                      </span>
+                      <div className="region-info">
+                        <span className="region-name">{region.region}</span>
+                        <span className="region-total">${(regionTotal / 1000000).toFixed(1)}M</span>
+                      </div>
+                    </h2>
+                    {!collapsedRegions[region.region] && region.coins.map(coin => (
+                      <div className="asset" key={coin.name}>
+                        <p className="asset-name">{coin.name}</p>
+                        <p className="asset-city">{coin.city}</p>
+                        <a 
+                          href={getExplorerLink(coin.issuer)} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="asset-issuer"
+                        >
+                          <span className="flag-emoji">
+                            {coin.city === 'New York' && '🇺🇸'}
+                            {coin.city === 'São Paulo' && '🇧🇷'}
+                            {coin.city === 'Paris' && '🇫🇷'}
+                          </span>
+                          {truncateAddress(coin.issuer)}
+                        </a>
+                        <div className="asset-stats">
+                          <div className="asset-stat-item">
+                            <span className="stat-label">MC</span>
+                            <span>${coin.amount.toLocaleString()}</span>
+                          </div>
+                          <div className="asset-stat-item">
+                            <span className="stat-label">24H VOL {coin.volume24h && coin.volume24h > 0 ? '🟢' : '⚪'}</span>
+                            <span>${(coin.volume24h || (coin.amount * 0.05)).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           )}
           
@@ -248,101 +247,22 @@ const Stablecoins = ({ stablecoinData, isLoading }) => {
                   Growth Overview
                 </h3>
                 {!collapsedAnalytics['growth'] && (
-                <div className="growth-metrics">
-                  {/* Supply Growth & Utilization Overview */}
-                  <div className="chart-section">
-                    <h4 className="chart-title">Supply vs Utilization Traction</h4>
-                    {renderStablecoinTractionScatter(stablecoinData.flatMap(region => region.coins))}
-                  </div>
-                  
-                  {/* Top Growing Stablecoins */}
-                  {stablecoinData.flatMap(region => region.coins)
-                    .sort((a, b) => b.amount - a.amount)
-                    .slice(0, 2)
-                    .map(coin => {
-                    const growth = getGrowthTrend(coin.amount);
-                    const supplyGrowthData = getStablecoinGrowthData(coin.amount);
-                    return (
-                      <div key={coin.name} className="growth-item">
-                        <div className="growth-header">
-                          <span className="asset-name-small">{coin.name}</span>
-                          <span className={`growth-indicator ${growth >= 0 ? 'positive' : 'negative'}`}>
-                            {growth >= 0 ? '📈' : '📉'} {Math.abs(growth).toFixed(1)}%
-                          </span>
-                        </div>
-                        <div className="chart-container">
-                          {renderLineChart(supplyGrowthData, growth >= 0 ? '#00ff88' : '#ff4444', 'supply')}
-                          <span className="chart-label">90-day supply growth</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  
-                  {/* Adoption & Market Penetration */}
-                  <div className="chart-section">
-                    <h4 className="chart-title">Market Adoption Metrics</h4>
-                    {stablecoinData.flatMap(region => region.coins).slice(0, 3).map(coin => {
-                      const supplyGrowthData = getStablecoinGrowthData(coin.amount);
-                      const totalGrowth = ((coin.amount / (coin.amount * 0.25)) - 1) * 100;
-                      return (
-                        <div key={`adoption-${coin.name}`} className="volume-chart">
-                          <span className="volume-label">{coin.name} - Market Penetration (+{totalGrowth.toFixed(0)}%)</span>
-                          {renderLineChart(supplyGrowthData, '#ff6b6b', 'utilization')}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                )}
-              </div>
-              
-              <div className="regional-breakdown">
-                <h3 
-                  className="analytics-header" 
-                  onClick={() => toggleAnalyticsSection('regional')}
-                >
-                  <span className={`collapse-icon ${collapsedAnalytics['regional'] ? 'collapsed' : ''}`}>
-                    ▼
-                  </span>
-                  Regional Distribution
-                </h3>
-                {!collapsedAnalytics['regional'] && (
-                  <div>
-                    {stablecoinData.map(region => {
-                      const regionTotal = region.coins.reduce((total, coin) => total + coin.amount, 0);
-                      const totalMarketCap = stablecoinData.reduce((total, r) => 
-                        total + r.coins.reduce((rTotal, coin) => rTotal + coin.amount, 0), 0
-                      );
-                      const percentage = totalMarketCap > 0 ? ((regionTotal / totalMarketCap) * 100).toFixed(1) : '0.0';
-                      
-                      return (
-                        <div key={region.region} className="regional-stat">
-                          <div className="region-bar-container">
-                            <div className="region-label">
-                              <span>{region.region}</span>
-                              <span className="region-percentage">{percentage}%</span>
-                            </div>
-                            <div className="region-bar">
-                              <div 
-                                className="region-fill" 
-                                style={{ width: `${percentage}%` }}
-                              />
-                            </div>
-                            <div className="region-amount">${(regionTotal / 1000000).toFixed(1)}M</div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-  </aside>
-);
-};
-
-export default Stablecoins;
-
+                  <div className="growth-metrics">
+                    {/* Supply Growth & Utilization Overview */}
+                    <div className="chart-section">
+                      <h4 className="chart-title">Supply vs Utilization Traction</h4>
+                      {renderStablecoinTractionScatter(stablecoinData.flatMap(region => region.coins))}
+                    </div>
+                    
+                    {/* Top Growing Stablecoins */}
+                    {stablecoinData.flatMap(region => region.coins)
+                      .sort((a, b) => b.amount - a.amount)
+                      .slice(0, 2)
+                      .map(coin => {
+                        const growth = getGrowthTrend(coin.amount);
+                        const supplyGrowthData = getStablecoinGrowthData(coin.amount);
+                        return (
+                          <div key={coin.name} className="growth-item">
+                            <div className="growth-header">
+                              <span className="asset-name-small">{coin.name}</span>
+                              <span className
