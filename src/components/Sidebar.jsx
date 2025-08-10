@@ -106,7 +106,7 @@ const Sidebar = ({ rwaData, isLoading }) => {
 
   const renderMarketCapGrowthScatter = (assets) => {
     const maxAmount = Math.max(...assets.map(a => a.amount));
-    const minAmount = Math.min(...assets.map(a => a.amount));
+    // Removed minAmount here since it was unused
     
     return (
       <div className="scatter-plot">
@@ -165,7 +165,7 @@ const Sidebar = ({ rwaData, isLoading }) => {
   };
 
   return (
-  <aside className="sidebar">
+    <aside className="sidebar">
       <h1 className="title">Real-World Assets</h1>
       <p className="tagline">{isLoading && '🔄 Loading...'}</p>
       
@@ -189,57 +189,57 @@ const Sidebar = ({ rwaData, isLoading }) => {
           {activeTab === 'assets' && (
             <div className="assets-view">
               {rwaData.map(region => {
-        const regionTotal = region.assets.reduce((total, asset) => total + asset.amount, 0);
-        return (
-          <div className="section" key={region.region}>
-            <h2 
-              className="section-header" 
-              onClick={() => toggleRegion(region.region)}
-            >
-              <span className={`collapse-icon ${collapsedRegions[region.region] ? 'collapsed' : ''}`}>
-                ▼
-              </span>
-              <div className="region-info">
-                <span className="region-name">{region.region}</span>
-                <span className="region-total">${(regionTotal / 1000000).toFixed(1)}M</span>
-              </div>
-            </h2>
-            {!collapsedRegions[region.region] && region.assets.map(asset => (
-              <div className="asset" key={asset.name}>
-              <p className="asset-name">{asset.name}</p>
-              <p className="asset-city">{asset.city}</p>
-              <a 
-                href={getExplorerLink(asset.issuer)} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="asset-issuer"
-              >
-                <span className="flag-emoji">
-                  {asset.city === 'New York' && '🇺🇸'}
-                  {asset.city === 'São Paulo' && '🇧🇷'}
-                  {asset.city === 'Paris' && '🇫🇷'}
-                  {asset.city === 'Singapore' && '🇸🇬'}
-                  {asset.city === 'Dubai' && '🇦🇪'}
-                  {asset.city === 'London' && '🇬🇧'}
-                  {asset.city === 'Riyadh' && '🇸🇦'}
-                </span>
-                {truncateAddress(asset.issuer)}
-              </a>
-              <div className="asset-stats">
-                <div className="asset-stat-item">
-                  <span className="stat-label">MC</span>
-                  <span>${asset.amount.toLocaleString()}</span>
-                </div>
-                <div className="asset-stat-item">
-                  <span className="stat-label">24H VOL {asset.volume24h && asset.volume24h > 0 ? '🟢' : '⚪'}</span>
-                  <span>${(asset.volume24h || (asset.amount * 0.05)).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
-                </div>
-              </div>
-            </div>
-                ))}
-              </div>
-            );
-          })}
+                const regionTotal = region.assets.reduce((total, asset) => total + asset.amount, 0);
+                return (
+                  <div className="section" key={region.region}>
+                    <h2 
+                      className="section-header" 
+                      onClick={() => toggleRegion(region.region)}
+                    >
+                      <span className={`collapse-icon ${collapsedRegions[region.region] ? 'collapsed' : ''}`}>
+                        ▼
+                      </span>
+                      <div className="region-info">
+                        <span className="region-name">{region.region}</span>
+                        <span className="region-total">${(regionTotal / 1000000).toFixed(1)}M</span>
+                      </div>
+                    </h2>
+                    {!collapsedRegions[region.region] && region.assets.map(asset => (
+                      <div className="asset" key={asset.name}>
+                        <p className="asset-name">{asset.name}</p>
+                        <p className="asset-city">{asset.city}</p>
+                        <a 
+                          href={getExplorerLink(asset.issuer)} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="asset-issuer"
+                        >
+                          <span className="flag-emoji">
+                            {asset.city === 'New York' && '🇺🇸'}
+                            {asset.city === 'São Paulo' && '🇧🇷'}
+                            {asset.city === 'Paris' && '🇫🇷'}
+                            {asset.city === 'Singapore' && '🇸🇬'}
+                            {asset.city === 'Dubai' && '🇦🇪'}
+                            {asset.city === 'London' && '🇬🇧'}
+                            {asset.city === 'Riyadh' && '🇸🇦'}
+                          </span>
+                          {truncateAddress(asset.issuer)}
+                        </a>
+                        <div className="asset-stats">
+                          <div className="asset-stat-item">
+                            <span className="stat-label">MC</span>
+                            <span>${asset.amount.toLocaleString()}</span>
+                          </div>
+                          <div className="asset-stat-item">
+                            <span className="stat-label">24H VOL {asset.volume24h && asset.volume24h > 0 ? '🟢' : '⚪'}</span>
+                            <span>${(asset.volume24h || (asset.amount * 0.05)).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           )}
           
@@ -256,51 +256,51 @@ const Sidebar = ({ rwaData, isLoading }) => {
                   Growth Overview
                 </h3>
                 {!collapsedAnalytics['growth'] && (
-                <div className="growth-metrics">
-                  {/* Market Cap Growth Overview */}
-                  <div className="chart-section">
-                    <h4 className="chart-title">Market Cap vs Growth Rate Analysis</h4>
-                    {renderMarketCapGrowthScatter(rwaData.flatMap(region => region.assets))}
+                  <div className="growth-metrics">
+                    {/* Market Cap Growth Overview */}
+                    <div className="chart-section">
+                      <h4 className="chart-title">Market Cap vs Growth Rate Analysis</h4>
+                      {renderMarketCapGrowthScatter(rwaData.flatMap(region => region.assets))}
+                    </div>
+                    
+                    {/* Top Growing Assets */}
+                    {rwaData.flatMap(region => region.assets)
+                      .sort((a, b) => getGrowthTrend(b.amount) - getGrowthTrend(a.amount))
+                      .slice(0, 3)
+                      .map(asset => {
+                        const growth = getGrowthTrend(asset.amount);
+                        const marketCapData = getMarketCapGrowthData(asset.amount);
+                        return (
+                          <div key={asset.name} className="growth-item">
+                            <div className="growth-header">
+                              <span className="asset-name-small">{asset.name}</span>
+                              <span className={`growth-indicator ${growth >= 0 ? 'positive' : 'negative'}`}>
+                                {growth >= 0 ? '📈' : '📉'} {Math.abs(growth).toFixed(1)}%
+                              </span>
+                            </div>
+                            <div className="chart-container">
+                              {renderLineChart(marketCapData, growth >= 0 ? '#00ff88' : '#ff4444', 'marketCap')}
+                              <span className="chart-label">90-day market cap growth</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    
+                    {/* Traction & Adoption Metrics */}
+                    <div className="chart-section">
+                      <h4 className="chart-title">Adoption Traction</h4>
+                      {rwaData.flatMap(region => region.assets).slice(0, 2).map(asset => {
+                        const marketCapData = getMarketCapGrowthData(asset.amount);
+                        const totalGrowth = ((asset.amount / (asset.amount * 0.35)) - 1) * 100;
+                        return (
+                          <div key={`traction-${asset.name}`} className="volume-chart">
+                            <span className="volume-label">{asset.name} - Adoption Rate (+{totalGrowth.toFixed(0)}%)</span>
+                            {renderLineChart(marketCapData, '#ffa500', 'adoptionRate')}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                  
-                  {/* Top Growing Assets */}
-                  {rwaData.flatMap(region => region.assets)
-                    .sort((a, b) => getGrowthTrend(b.amount) - getGrowthTrend(a.amount))
-                    .slice(0, 3)
-                    .map(asset => {
-                    const growth = getGrowthTrend(asset.amount);
-                    const marketCapData = getMarketCapGrowthData(asset.amount);
-                    return (
-                      <div key={asset.name} className="growth-item">
-                        <div className="growth-header">
-                          <span className="asset-name-small">{asset.name}</span>
-                          <span className={`growth-indicator ${growth >= 0 ? 'positive' : 'negative'}`}>
-                            {growth >= 0 ? '📈' : '📉'} {Math.abs(growth).toFixed(1)}%
-                          </span>
-                        </div>
-                        <div className="chart-container">
-                          {renderLineChart(marketCapData, growth >= 0 ? '#00ff88' : '#ff4444', 'marketCap')}
-                          <span className="chart-label">90-day market cap growth</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                  
-                  {/* Traction & Adoption Metrics */}
-                  <div className="chart-section">
-                    <h4 className="chart-title">Adoption Traction</h4>
-                    {rwaData.flatMap(region => region.assets).slice(0, 2).map(asset => {
-                      const marketCapData = getMarketCapGrowthData(asset.amount);
-                      const totalGrowth = ((asset.amount / (asset.amount * 0.35)) - 1) * 100;
-                      return (
-                        <div key={`traction-${asset.name}`} className="volume-chart">
-                          <span className="volume-label">{asset.name} - Adoption Rate (+{totalGrowth.toFixed(0)}%)</span>
-                          {renderLineChart(marketCapData, '#ffa500', 'adoptionRate')}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
                 )}
               </div>
               
@@ -313,7 +313,7 @@ const Sidebar = ({ rwaData, isLoading }) => {
                     ▼
                   </span>
                   Regional Distribution
-                                </h3>
+                </h3>
                 {!collapsedAnalytics['regional'] && (
                   <div>
                     {rwaData.map(region => {
@@ -346,11 +346,10 @@ const Sidebar = ({ rwaData, isLoading }) => {
               </div>
             </div>
           )}
-    </div>
-    </div>
-  </aside>
-);
+        </div>
+      </div>
+    </aside>
+  );
 };
 
 export default Sidebar;
-
