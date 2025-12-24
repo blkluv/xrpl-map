@@ -2209,3 +2209,10 @@ a {
     line-height: 1.4;
   }
 }
+.dashboard-title a {
+  text-decoration: none;
+  color: #00ff88;
+  font-weight: 500;
+  margin-left: 6px;
+  white-space: nowrap;
+}
