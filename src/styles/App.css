@@ -2195,3 +2195,17 @@ a {
   }
   
 }
+@media (max-width: 768px) {
+  .title-bar {
+    border-bottom: none;
+    background: rgba(0, 0, 0, 0.95);
+    min-height: 60px;
+  }
+
+  .dashboard-title,
+  .dashboard-title p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+  }
+}
