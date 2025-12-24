@@ -206,8 +206,16 @@ function App() {
           </div>
           */}
           <div className="dashboard-title">
-            <h1>XRPL RWA HQ</h1>
-            <p>Real-time RWA & stablecoin analytics. Watch TradFi come onchain.</p>
+            <h1>XRPL RWA</h1>
+<p>
+A live, on-chain map of real-world assets and capital flows — powered by <strong>RWAcast™</strong>, 
+a short-form TikTok AR 🎙️ UGC podcast for XRPL RWA business partners listed on the map. 
+RWAcasters act as a real-time marketing arm, turning XRPL activity into credible short-form news, 
+with the top 10 clips each month earning XRP.
+<a href="https://www.tiktok.com/@RWATOK" target="_blank" rel="noopener">
+Watch RWAcasts on @RWATOK →
+</a>
+</p>
 
           </div>
         </div>
